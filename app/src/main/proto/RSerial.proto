@@ -1,0 +1,56 @@
+
+syntax = "proto3";
+package RSerial;
+
+service RSerial{
+    //定时向服务器发送心跳信息
+    rpc KeepAlive(ClientStatus) returns (ServerStatus){}
+    //向服务器请求建立会话
+    rpc CreateSession(Req) returns (Ack){}
+    //向服务器请求加入会话
+    rpc JoinSession(Req) returns (Ack){}
+    //向服务器发送byte信息,信息上传之后保存到
+    rpc WriteBytes(ByteData) returns (Ack){}
+    //向服务器读取byte信息
+    rpc ReadBytes(Req) returns (ByteData){}
+
+    rpc WriteBytesTest(ByteData) returns(Ack){}
+
+    rpc Disconnect(Req) returns (Ack){}
+
+}
+
+message ClientStatus{
+    int64 timestamp = 1;
+    string id = 2;
+    string sessionId = 3;
+}
+
+message ServerStatus{
+    int64 timestamp = 1;
+    bool sessionStatus =2; //当前参与的会话是否有消息未读
+}
+
+message Req{
+    int64 timestamp = 1;
+    string id = 2;
+    string sessionId = 3;
+}
+
+message Ack{
+    int64 timestamp = 1;
+    bool ok = 2;
+    string sessionId =3;
+}
+
+
+message ByteData{
+    int64 timestamp = 1;
+    string id = 2;
+    string sessionId = 3;
+    bytes data = 5;
+}
+
+
+
+
